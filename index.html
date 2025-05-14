@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Weather Station Dashboard</title>
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="stylesheet" href="./styles/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="theme-toggle">
+      <button id="theme-toggle-btn" aria-label="Toggle theme">
+        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          <h1>IoT Weather Station Dashboard</h1>
+        </div>
+        <div class="last-updated">
+          Last updated: <span id="last-updated-time">--:--:--</span>
+        </div>
+      </div>
+    </header>
+    
+    <main class="dashboard-content">
+      <section class="data-cards">
+        <div class="card temperature-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          </div>
+          <div class="card-content">
+            <h2>Temperature</h2>
+            <div class="card-value-container">
+              <span id="current-temperature" class="card-value">--.-</span>
+              <span class="card-unit">°C</span>
+            </div>
+            <div class="card-trend">
+              <span id="temp-trend-icon"></span>
+              <span id="temp-trend-value"></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card humidity-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a8 8 0 0 1-8-8c0-3.502 2.667-8.333 8-14 5.333 5.667 8 10.498 8 14a8 8 0 0 1-8 8z"/></svg>
+          </div>
+          <div class="card-content">
+            <h2>Humidity</h2>
+            <div class="card-value-container">
+              <span id="current-humidity" class="card-value">--</span>
+              <span class="card-unit">%</span>
+            </div>
+            <div class="card-trend">
+              <span id="humidity-trend-icon"></span>
+              <span id="humidity-trend-value"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section class="chart-container">
+        <div class="chart-header">
+          <h2>Historical Data</h2>
+          <div class="chart-controls">
+            <button data-time="hour" class="time-filter active">1h</button>
+            <button data-time="day" class="time-filter">24h</button>
+            <button data-time="week" class="time-filter">7d</button>
+          </div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="historical-chart"></canvas>
+        </div>
+      </section>
+    </main>
+    
+    <div class="connection-status">
+      <div id="status-indicator" class="connecting"></div>
+      <span id="connection-text">Connecting to sensors...</span>
+    </div>
+  </div>
+  
+  <script src="./scripts/firebase.js"></script>
+  <script src="./scripts/charts.js"></script>
+  <script src="./scripts/app.js"></script>
+</body>
+</html>
